@@ -9,9 +9,8 @@ const DashboardTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarIndicatorStyle: { backgroundColor: "#7e3ff2" },
-        tabBarLabelStyle: { fontSize: 14, fontWeight: "bold" },
-        tabBarStyle: { backgroundColor: "#F9F9F9" },
+        tabBarStyle: { display: "none" }, // Tab-Leiste verstecken
+        swipeEnabled: true, // Ermöglicht Swipe-Navigation
       }}
     >
       <Tab.Screen name="Dashboard" component={DashboardScreen} />

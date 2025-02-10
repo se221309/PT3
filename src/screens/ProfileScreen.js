@@ -6,8 +6,7 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.title}>Mein Profil</Text>
-
-      <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("Dashboard")}>
+      <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("Dashboard")}> 
         <Text style={globalStyles.buttonText}>Zurück zum Dashboard</Text>
       </TouchableOpacity>
     </View>

@@ -1,32 +1,49 @@
 import React from "react";
-import { View, Text, FlatList } from "react-native";
-import globalStyles from "../styles/globalStyles";
-
-const leaderboardData = [
-  { id: "1", name: "Max Mustermann", score: 1200, color: "#FFD700" }, // Gold
-  { id: "2", name: "Lisa Müller", score: 1150, color: "#C0C0C0" }, // Silber
-  { id: "3", name: "Tom Schmidt", score: 1100, color: "#CD7F32" }, // Bronze
-  { id: "4", name: "Anna Bauer", score: 1050, color: "#FFFFFF" }, // Standard Weiß
-  { id: "5", name: "Felix Becker", score: 1000, color: "#FFFFFF" },
-];
+import { View, Text, ScrollView } from "react-native";
+import { styles } from "../styles/globalStyles";
 
 const LeaderboardScreen = () => {
-  return (
-    <View style={globalStyles.container}>
-      <Text style={globalStyles.title}>Leaderboard</Text>
+  const leaderboardData = [
+    { name: "Sophie L.", score: "14.000", rank: 1 },
+    { name: "Leon M.", score: "13.800", rank: 2 },
+    { name: "Max B.", score: "13.500", rank: 3 },
+    { name: "Sarah K.", score: "13.200", rank: 4 },
+    { name: "Alex J.", score: "12.900", rank: 5 },
+    { name: "Nina F.", score: "12.600", rank: 6 },
+    { name: "Lukas P.", score: "12.300", rank: 7 },
+    { name: "Mia W.", score: "12.000", rank: 8 },
+    { name: "Felix D.", score: "11.800", rank: 9 },
+    { name: "Hanna G.", score: "11.600", rank: 10 },
+    { name: "Chris T.", score: "11.500", rank: 11 }, // Extra Personen für Tests
+    { name: "Anna M.", score: "11.400", rank: 12 },
+    { name: "David R.", score: "11.300", rank: 13 },
+    { name: "Sophia K.", score: "11.200", rank: 14 },
+    { name: "Maximilian H.", score: "11.100", rank: 15 },
+  ];
 
-      <FlatList
-        data={leaderboardData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item, index }) => (
-          <View style={[globalStyles.leaderboardRow, { backgroundColor: item.color }]}>
-            <Text style={globalStyles.rank}>{index + 1}.</Text>
-            <Text style={globalStyles.name}>{item.name}</Text>
-            <Text style={globalStyles.score}>{item.score} Punkte</Text>
-          </View>
-        )}
-      />
-    </View>
+  return (
+    <ScrollView style={styles.leaderboardContainer}>
+      <Text style={styles.headerText}>Schülerliste</Text>
+      {leaderboardData.map((player, index) => (
+        <View
+          key={index}
+          style={[
+            styles.leaderboardItem,
+            player.rank === 1
+              ? styles.gold
+              : player.rank === 2
+              ? styles.silver
+              : player.rank === 3
+              ? styles.bronze
+              : styles.defaultRank,
+          ]}
+        >
+          <Text style={styles.rank}>{player.rank}</Text>
+          <Text style={styles.playerName}>{player.name}</Text>
+          <Text style={styles.playerScore}>{player.score}</Text>
+        </View>
+      ))}
+    </ScrollView>
   );
 };
 

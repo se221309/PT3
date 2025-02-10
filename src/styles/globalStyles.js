@@ -1,78 +1,170 @@
 import { StyleSheet } from "react-native";
 
-const globalStyles = StyleSheet.create({
-  container: {
+export const styles = StyleSheet.create({
+  dashboardContainer: {
     flex: 1,
-    backgroundColor: "#F9F9F9",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#0F0B29",
     padding: 20,
+    paddingBottom: 40, // Mehr Abstand unten, damit nichts abgeschnitten wird
   },
-  title: {
-    fontSize: 28,  // 🔄 Größer wie in Version 1
-    fontWeight: "bold",
-    color: "#7e3ff2",
-    textAlign: "center",
+  streakContainer: {
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    padding: 15,
+    alignItems: "center",
     marginBottom: 20,
-    fontFamily: "serif",  // 🔄 Schriftstil aus Version 1
+    marginTop: 20,
   },
-  subtitle: {
-    fontSize: 20,  // 🔄 Größe anpassen
-    fontWeight: "600",
-    color: "#333",
-    textAlign: "center",
+  streakText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  streakDots: {
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  dot: {
+    width: 15,
+    height: 15,
+    backgroundColor: "#A020F0",
+    borderRadius: 50,
+    marginHorizontal: 5,
+  },
+  sectionHeader: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#ffffff",
     marginBottom: 15,
   },
-  button: {
-    backgroundColor: "#7e3ff2",  // 🔄 Lila Hintergrund (wie in Version 1)
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  buttonText: {
-    color: "#ffffff",  // 🔄 Weißer Text
-    fontSize: 18,  // 🔄 Schriftgröße aus Version 1
+  subHeader: {
+    fontSize: 20,
     fontWeight: "bold",
-    fontFamily: "serif",  // 🔄 Kursive Serif-Schrift wie vorher
+    color: "#ffffff",
+    marginTop: 15,
   },
-  leaderboardRow: {
+  horizontalScroll: {
+    flexDirection: "row",
+    marginBottom: 20,
+  },
+  opponentCard: {
+    backgroundColor: "#A020F0",
+    padding: 15,
+    borderRadius: 15,
+    alignItems: "center",
+    marginRight: 10,
+    width: 100,
+    marginTop: 10,
+  },
+  opponentName: {
+    color: "#ffffff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  opponentScore: {
+    color: "#ffffff",
+    fontSize: 14,
+  },
+  playButton: {
+    backgroundColor: "#ffffff",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    marginTop: 5,
+  },
+  playButtonText: {
+    color: "#A020F0",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  singleGameCard: {
+    backgroundColor: "#ffffff",
+    padding: 15,
+    borderRadius: 15,
+    alignItems: "center",
+    marginRight: 10,
+    width: 100,
+    marginTop: 10,
+  },
+  singleGameScore: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  gameMode: {
+    backgroundColor: "#A020F0",
+    padding: 12,
+    borderRadius: 15,
+    marginTop: 10,
+    alignItems: "center",
+  },
+  gameModeText: {
+    color: "#ffffff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+
+  /* --- Fragen Lernen --- */
+  learningItem: {
+    backgroundColor: "#2E2E2E",
+    padding: 20,
+    borderRadius: 15,
+    marginBottom: 10,
+    borderLeftWidth: 8,
+  },
+  learningTitle: {
+    fontSize: 18,
+    color: "#ffffff",
+    fontWeight: "bold",
+  },
+  learningStats: {
+    color: "#cccccc",
+    fontSize: 16,
+  },
+
+  /* --- Leaderboard Styling --- */
+  leaderboardContainer: {
+    flex: 1,
+    backgroundColor: "#0F0B29", // Hintergrund ans Dashboard anpassen
+    padding: 20,
+  },
+  leaderboardItem: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "90%",
-    padding: 12,
-    marginVertical: 5,
-    borderRadius: 12,
-    backgroundColor: "#FFFFFF",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderRadius: 25,
+    marginBottom: 10,
+    backgroundColor: "#ffffff",
+  },
+  gold: { backgroundColor: "#FFD700" },
+  silver: { backgroundColor: "#C0C0C0" },
+  bronze: { backgroundColor: "#CD7F32" },
+  defaultRank: { backgroundColor: "#ffffff" },
+
+  rankBox: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "#ffffff",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
   },
   rank: {
-    fontSize: 20,  // 🔄 Größer für bessere Sichtbarkeit
+    fontSize: 16,
     fontWeight: "bold",
-    color: "#333",
+    color: "#000000",
   },
-  name: {
-    fontSize: 20,  // 🔄 Wieder größer wie in Version 1
-    color: "#333",
+  playerName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#000000",
+    textAlign: "center",
     flex: 1,
   },
-  score: {
-    fontSize: 20,  // 🔄 Wieder größer
+  playerScore: {
+    fontSize: 16,
     fontWeight: "bold",
-    color: "#333",
+    color: "#000000",
   },
 });
-
-export default globalStyles;

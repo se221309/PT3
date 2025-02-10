@@ -1,22 +1,96 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import globalStyles from "../styles/globalStyles";
+import { View, Text, ScrollView, TouchableOpacity, FlatList } from "react-native";
+import { styles } from "../styles/globalStyles"; // Falls es eine styles-Datei gibt
 
-const DashboardScreen = ({ navigation }) => {
+const opponents = [
+  { id: "1", name: "Sophie", score: "5 - 6" },
+  { id: "2", name: "Leon", score: "3 - 2" },
+  { id: "3", name: "Max", score: "4 - 8" },
+  { id: "4", name: "Sophia", score: "7 - 5" },
+];
+
+const singlePlayerGames = [
+  { id: "1", score: "98%" },
+  { id: "2", score: "97%" },
+  { id: "3", score: "95%" },
+];
+
+const learningSections = [
+  { id: "1", title: "Elektrotechnik", progress: "20 / 47", percent: "43%", color: "#FF0000" },
+  { id: "2", title: "Material- & Werkstoffe", progress: "4 / 10", percent: "40%", color: "#0066CC" },
+  { id: "3", title: "SPS", progress: "2 / 3", percent: "66%", color: "#008000" },
+];
+
+export default function DashboardScreen({ navigation }) {
   return (
-    <View style={globalStyles.container}>
-      <Text style={globalStyles.title}>Dashboard</Text>
+    <ScrollView style={styles.dashboardContainer} showsVerticalScrollIndicator={false}>
+      {/* Streak */}
+      <View style={styles.streakContainer}>
+        <Text style={styles.streakText}>Dein Streak:</Text>
+        <Text style={{ fontSize: 22, fontWeight: "bold", color: "#FF4500" }}>4 🔥</Text>
+        <View style={styles.streakDots}>
+          {[...Array(6)].map((_, index) => (
+            <View key={index} style={styles.dot} />
+          ))}
+        </View>
+      </View>
 
-      <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("Profile")}>
-        <Text style={globalStyles.buttonText}>Mein Profil</Text>
+      {/* Modus wählen */}
+      <Text style={styles.sectionHeader}>Modus wählen</Text>
+
+      {/* Duell */}
+      <Text style={styles.subHeader}>Duell:</Text>
+      <TouchableOpacity style={styles.gameMode}>
+        <Text style={styles.gameModeText}>Neues Spiel starten</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("Categories")}>
-        <Text style={globalStyles.buttonText}>Fragen Lernen</Text>
+      <FlatList
+        horizontal
+        data={opponents}
+        keyExtractor={(item) => item.id}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.horizontalScroll}
+        renderItem={({ item }) => (
+          <View style={styles.opponentCard}>
+            <Text style={styles.opponentName}>{item.name}</Text>
+            <Text style={styles.opponentScore}>{item.score}</Text>
+            <TouchableOpacity style={styles.playButton}>
+              <Text style={styles.playButtonText}>Spielen</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+
+      {/* Einzelspiel */}
+      <Text style={styles.subHeader}>Einzelspiel:</Text>
+      <TouchableOpacity style={styles.gameMode}>
+        <Text style={styles.gameModeText}>Neues Spiel starten</Text>
       </TouchableOpacity>
-      
-    </View>
+
+      <FlatList
+        horizontal
+        data={singlePlayerGames}
+        keyExtractor={(item) => item.id}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.horizontalScroll}
+        renderItem={({ item }) => (
+          <View style={styles.singleGameCard}>
+            <Text style={styles.singleGameScore}>{item.score}</Text>
+            <TouchableOpacity style={styles.playButton}>
+              <Text style={styles.playButtonText}>Spielen</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+
+      {/* Fragen Lernen */}
+      <Text style={styles.sectionHeader}>Fragen Lernen</Text>
+      {learningSections.map((item) => (
+        <View key={item.id} style={[styles.learningItem, { borderLeftColor: item.color }]}>
+          <Text style={styles.learningTitle}>{item.title}</Text>
+          <Text style={styles.learningStats}>{item.progress} {item.percent}</Text>
+        </View>
+      ))}
+    </ScrollView>
   );
-};
-
-export default DashboardScreen;
+}
