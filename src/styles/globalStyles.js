@@ -1,11 +1,38 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+    marginTop: 30, // Sicherstellen, dass ALLES unter dem Menü beginnt
+  },
   dashboardContainer: {
     flex: 1,
     backgroundColor: "#0F0B29",
     padding: 20,
-    paddingBottom: 40, // Mehr Abstand unten, damit nichts abgeschnitten wird
+    paddingBottom: 40,
+    marginTop: 20,
+  },
+
+  fixedHeader: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 60,
+    backgroundColor: "#0F0B29", // Gleich wie Dashboard Hintergrund
+    justifyContent: "center",
+    paddingHorizontal: 15,
+    zIndex: 100, // Sicherstellen, dass der Button über allem liegt
+  },
+  
+  menuButton: {
+    position: "absolute",
+    top: 10,
+    left: 15,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    padding: 10,
+    borderRadius: 5,
+    zIndex: 10,
   },
   streakContainer: {
     backgroundColor: "#ffffff",
@@ -13,7 +40,7 @@ export const styles = StyleSheet.create({
     padding: 15,
     alignItems: "center",
     marginBottom: 20,
-    marginTop: 20,
+    marginTop: 25,
   },
   streakText: {
     fontSize: 18,

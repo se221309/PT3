@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity, FlatList } from "react-native";
-import { styles } from "../styles/globalStyles"; // Falls es eine styles-Datei gibt
+import { styles } from "../styles/globalStyles";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const opponents = [
   { id: "1", name: "Sophie", score: "5 - 6" },
@@ -23,74 +24,86 @@ const learningSections = [
 
 export default function DashboardScreen({ navigation }) {
   return (
-    <ScrollView style={styles.dashboardContainer} showsVerticalScrollIndicator={false}>
-      {/* Streak */}
-      <View style={styles.streakContainer}>
-        <Text style={styles.streakText}>Dein Streak:</Text>
-        <Text style={{ fontSize: 22, fontWeight: "bold", color: "#FF4500" }}>4 🔥</Text>
-        <View style={styles.streakDots}>
-          {[...Array(6)].map((_, index) => (
-            <View key={index} style={styles.dot} />
-          ))}
-        </View>
+    <View style={styles.screenContainer}>
+      
+      {/* Menü-Leiste bleibt fixiert */}
+      <View style={styles.fixedHeader}>
+        <TouchableOpacity style={styles.menuButton} onPress={() => navigation.openDrawer()}>
+          <MaterialIcons name="menu" size={28} color="#ffffff" />
+        </TouchableOpacity>
       </View>
 
-      {/* Modus wählen */}
-      <Text style={styles.sectionHeader}>Modus wählen</Text>
-
-      {/* Duell */}
-      <Text style={styles.subHeader}>Duell:</Text>
-      <TouchableOpacity style={styles.gameMode}>
-        <Text style={styles.gameModeText}>Neues Spiel starten</Text>
-      </TouchableOpacity>
-
-      <FlatList
-        horizontal
-        data={opponents}
-        keyExtractor={(item) => item.id}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.horizontalScroll}
-        renderItem={({ item }) => (
-          <View style={styles.opponentCard}>
-            <Text style={styles.opponentName}>{item.name}</Text>
-            <Text style={styles.opponentScore}>{item.score}</Text>
-            <TouchableOpacity style={styles.playButton}>
-              <Text style={styles.playButtonText}>Spielen</Text>
-            </TouchableOpacity>
+      {/* Der gesamte Inhalt beginnt unterhalb der Menü-Leiste */}
+      <ScrollView style={styles.dashboardContainer} showsVerticalScrollIndicator={false}>
+        
+        {/* Streak-Container */}
+        <View style={styles.streakContainer}>
+          <Text style={styles.streakText}>Dein Streak:</Text>
+          <Text style={{ fontSize: 22, fontWeight: "bold", color: "#FF4500" }}>4 🔥</Text>
+          <View style={styles.streakDots}>
+            {[...Array(6)].map((_, index) => (
+              <View key={index} style={styles.dot} />
+            ))}
           </View>
-        )}
-      />
-
-      {/* Einzelspiel */}
-      <Text style={styles.subHeader}>Einzelspiel:</Text>
-      <TouchableOpacity style={styles.gameMode}>
-        <Text style={styles.gameModeText}>Neues Spiel starten</Text>
-      </TouchableOpacity>
-
-      <FlatList
-        horizontal
-        data={singlePlayerGames}
-        keyExtractor={(item) => item.id}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.horizontalScroll}
-        renderItem={({ item }) => (
-          <View style={styles.singleGameCard}>
-            <Text style={styles.singleGameScore}>{item.score}</Text>
-            <TouchableOpacity style={styles.playButton}>
-              <Text style={styles.playButtonText}>Spielen</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
-
-      {/* Fragen Lernen */}
-      <Text style={styles.sectionHeader}>Fragen Lernen</Text>
-      {learningSections.map((item) => (
-        <View key={item.id} style={[styles.learningItem, { borderLeftColor: item.color }]}>
-          <Text style={styles.learningTitle}>{item.title}</Text>
-          <Text style={styles.learningStats}>{item.progress} {item.percent}</Text>
         </View>
-      ))}
-    </ScrollView>
+
+        {/* Modus wählen */}
+        <Text style={styles.sectionHeader}>Modus wählen</Text>
+
+        {/* Duell */}
+        <Text style={styles.subHeader}>Duell:</Text>
+        <TouchableOpacity style={styles.gameMode}>
+          <Text style={styles.gameModeText}>Neues Spiel starten</Text>
+        </TouchableOpacity>
+
+        <FlatList
+          horizontal
+          data={opponents}
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalScroll}
+          renderItem={({ item }) => (
+            <View style={styles.opponentCard}>
+              <Text style={styles.opponentName}>{item.name}</Text>
+              <Text style={styles.opponentScore}>{item.score}</Text>
+              <TouchableOpacity style={styles.playButton}>
+                <Text style={styles.playButtonText}>Spielen</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+
+        {/* Einzelspiel */}
+        <Text style={styles.subHeader}>Einzelspiel:</Text>
+        <TouchableOpacity style={styles.gameMode}>
+          <Text style={styles.gameModeText}>Neues Spiel starten</Text>
+        </TouchableOpacity>
+
+        <FlatList
+          horizontal
+          data={singlePlayerGames}
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalScroll}
+          renderItem={({ item }) => (
+            <View style={styles.singleGameCard}>
+              <Text style={styles.singleGameScore}>{item.score}</Text>
+              <TouchableOpacity style={styles.playButton}>
+                <Text style={styles.playButtonText}>Spielen</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+
+        {/* Fragen Lernen */}
+        <Text style={styles.sectionHeader}>Fragen Lernen</Text>
+        {learningSections.map((item) => (
+          <View key={item.id} style={[styles.learningItem, { borderLeftColor: item.color }]}>
+            <Text style={styles.learningTitle}>{item.title}</Text>
+            <Text style={styles.learningStats}>{item.progress} {item.percent}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
   );
 }
