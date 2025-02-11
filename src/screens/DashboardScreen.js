@@ -41,7 +41,7 @@ export default function DashboardScreen({ navigation }) {
           <Text style={styles.streakText}>Dein Streak:</Text>
           <Text style={{ fontSize: 22, fontWeight: "bold", color: "#FF4500" }}>4 🔥</Text>
           <View style={styles.streakDots}>
-            {[...Array(6)].map((_, index) => (
+            {[...Array(4)].map((_, index) => (
               <View key={index} style={styles.dot} />
             ))}
           </View>
@@ -52,7 +52,10 @@ export default function DashboardScreen({ navigation }) {
 
         {/* Duell */}
         <Text style={styles.subHeader}>Duell:</Text>
-        <TouchableOpacity style={styles.gameMode}>
+        <TouchableOpacity 
+          style={styles.gameMode}
+          onPress={() => navigation.navigate("Quiz", { mode: "duel" })} // Weiterleitung mit Modus
+        >
           <Text style={styles.gameModeText}>Neues Spiel starten</Text>
         </TouchableOpacity>
 
@@ -66,7 +69,10 @@ export default function DashboardScreen({ navigation }) {
             <View style={styles.opponentCard}>
               <Text style={styles.opponentName}>{item.name}</Text>
               <Text style={styles.opponentScore}>{item.score}</Text>
-              <TouchableOpacity style={styles.playButton}>
+              <TouchableOpacity 
+                style={styles.playButton}
+                onPress={() => navigation.navigate("Quiz", { mode: "duel" })}
+              >
                 <Text style={styles.playButtonText}>Spielen</Text>
               </TouchableOpacity>
             </View>
@@ -75,7 +81,10 @@ export default function DashboardScreen({ navigation }) {
 
         {/* Einzelspiel */}
         <Text style={styles.subHeader}>Einzelspiel:</Text>
-        <TouchableOpacity style={styles.gameMode}>
+        <TouchableOpacity 
+          style={styles.gameMode}
+          onPress={() => navigation.navigate("Quiz", { mode: "single" })} // Weiterleitung mit Modus
+        >
           <Text style={styles.gameModeText}>Neues Spiel starten</Text>
         </TouchableOpacity>
 
@@ -88,15 +97,18 @@ export default function DashboardScreen({ navigation }) {
           renderItem={({ item }) => (
             <View style={styles.singleGameCard}>
               <Text style={styles.singleGameScore}>{item.score}</Text>
-              <TouchableOpacity style={styles.playButton}>
+              <TouchableOpacity 
+                style={styles.playButton}
+                onPress={() => navigation.navigate("Quiz", { mode: "single" })}
+              >
                 <Text style={styles.playButtonText}>Spielen</Text>
               </TouchableOpacity>
             </View>
           )}
         />
 
-        {/* Fragen Lernen */}
-        <Text style={styles.sectionHeader}>Fragen Lernen</Text>
+        {/* Lernfortschritt */}
+        <Text style={styles.sectionHeader}>Lernfortschritt:</Text>
         {learningSections.map((item) => (
           <View key={item.id} style={[styles.learningItem, { borderLeftColor: item.color }]}>
             <Text style={styles.learningTitle}>{item.title}</Text>
