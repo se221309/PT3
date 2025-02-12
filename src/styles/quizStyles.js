@@ -7,68 +7,62 @@ export const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
   },
-
-  /* Timer für den Duellmodus */
-  timer: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#FF4500",
-    textAlign: "center",
-    marginBottom: 20,
-  },
-
-  /* Frage Text */
   questionText: {
-    fontSize: 22,
+    fontSize: 20,
+    color: "#ffffff",
     fontWeight: "bold",
-    color: "#FFFFFF",
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 15,
   },
-
-  /* Multiple Choice Buttons */
+  timerContainer: {
+    height: 8,
+    width: "100%",
+    backgroundColor: "#444",
+    borderRadius: 5,
+    marginVertical: 10,
+    overflow: "hidden",
+  },
+  timerBar: {
+    height: "100%",
+    backgroundColor: "green",
+  },
   optionButton: {
-    backgroundColor: "#2E2E2E",
+    backgroundColor: "#ffffff",
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
     alignItems: "center",
   },
-  selectedOption: {
-    backgroundColor: "#A020F0",
+  selectedAnswer: {
+    backgroundColor: "#B0B0B0",
+    borderColor: "#8F8F8F",
   },
-  optionText: {
-    fontSize: 18,
-    color: "#FFFFFF",
-    fontWeight: "bold",
+  correctAnswer: {
+    backgroundColor: "#008000", // Richtige Antwort in Grün
   },
-
-  /* Multiple Choice Grid */
+  wrongAnswer: {
+    backgroundColor: "#FF4C4C", // Falsche Antwort in Rot
+  },
   gridContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
   },
   gridItem: {
-    width: "48%",
-    backgroundColor: "#2E2E2E",
+    backgroundColor: "#ffffff",
     padding: 15,
     borderRadius: 10,
+    width: "48%",
     marginBottom: 10,
     alignItems: "center",
   },
-
-  /* Text Input */
   textInput: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#ffffff",
     padding: 15,
     borderRadius: 10,
-    fontSize: 18,
-    color: "#000000",
-    marginBottom: 20,
+    marginBottom: 10,
+    textAlign: "center",
   },
-
-  /* Weiter-Button */
   nextButton: {
     backgroundColor: "#A020F0",
     padding: 15,
@@ -77,8 +71,14 @@ export const styles = StyleSheet.create({
     marginTop: 20,
   },
   nextButtonText: {
-    fontSize: 18,
-    color: "#FFFFFF",
+    color: "#ffffff",
     fontWeight: "bold",
+  },
+  feedbackText: {
+    fontSize: 18,
+    color: "#ffffff",
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: 10,
   },
 });
