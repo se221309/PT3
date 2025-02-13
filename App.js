@@ -14,14 +14,18 @@ import DashboardTabs from "./src/screens/DashboardTabs"; // Dashboard & Leaderbo
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-// Drawer Navigation
-const DrawerNavigator = () => {
+// Drawer Navigation mit Übergabe von userType
+const DrawerNavigator = ({ route }) => {
+  const { userType } = route.params || { userType: "lehrling" }; // Standard: Lehrling
+
   return (
     <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawer {...props} />}
+      drawerContent={(props) => <CustomDrawer {...props} userType={userType} />}
       screenOptions={{ headerShown: false }}
     >
-      <Drawer.Screen name="DashboardTabs" component={DashboardTabs} />
+      <Drawer.Screen name="DashboardTabs">
+        {(props) => <DashboardTabs {...props} userType={userType} />}
+      </Drawer.Screen>
       <Drawer.Screen name="Profile" component={ProfileScreen} />
     </Drawer.Navigator>
   );
