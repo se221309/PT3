@@ -14,9 +14,9 @@ export default function CustomDrawer(props) {
       </View>
 
       <DrawerContentScrollView {...props}>
-        <TouchableOpacity style={drawerStyles.drawerItem} onPress={() => props.navigation.navigate("Profile")}>
-          <Text style={drawerStyles.drawerItemText}>Meine Daten</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={drawerStyles.drawerItem} onPress={() => props.navigation.navigate("Profile")}>
+        <Text style={drawerStyles.drawerItemText}>Mein Profil</Text>
+      </TouchableOpacity>
 
         <TouchableOpacity style={drawerStyles.drawerItem} onPress={() => props.navigation.navigate("Settings")}>
           <Text style={drawerStyles.drawerItemText}>Einstellungen</Text>

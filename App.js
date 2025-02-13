@@ -9,12 +9,12 @@ import SignUpScreen from "./src/screens/SignUpScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import CategoriesScreen from "./src/screens/CategoriesScreen";
 import QuizScreen from "./src/screens/QuizScreen";
-import DashboardTabs from "./src/screens/DashboardTabs"; // Dashboard & Leaderboard per Swipe
+import DashboardTabs from "./src/screens/DashboardTabs"; // Dashboard mit Leaderboard Swipe
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-// Drawer Navigation mit Übergabe von userType
+// **Drawer Navigation**
 const DrawerNavigator = ({ route }) => {
   const { userType } = route.params || { userType: "lehrling" }; // Standard: Lehrling
 
@@ -40,6 +40,7 @@ export default function App() {
         <Stack.Screen name="Dashboard" component={DrawerNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="Categories" component={CategoriesScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Quiz" component={QuizScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
