@@ -22,18 +22,20 @@ const learningSections = [
   { id: "3", title: "SPS", progress: "2 / 3", percent: "66%", color: "#008000" },
 ];
 
-export default function DashboardScreen({ navigation }) {
+export default function DashboardScreen({ route, navigation }) {
+  const { userType } = route.params || { userType: "lehrling" }; // Standardwert für Lehrlinge
+
   return (
     <View style={styles.screenContainer}>
       
-      {/* Menü-Leiste bleibt fixiert */}
+      {/* Menü-Button für Drawer */}
       <View style={styles.fixedHeader}>
         <TouchableOpacity style={styles.menuButton} onPress={() => navigation.openDrawer()}>
           <MaterialIcons name="menu" size={28} color="#ffffff" />
         </TouchableOpacity>
       </View>
 
-      {/* Der gesamte Inhalt beginnt unterhalb der Menü-Leiste */}
+      {/* Inhalt unterhalb des Headers */}
       <ScrollView style={styles.dashboardContainer} showsVerticalScrollIndicator={false}>
         
         {/* Streak-Container */}
@@ -54,7 +56,7 @@ export default function DashboardScreen({ navigation }) {
         <Text style={styles.subHeader}>Duell:</Text>
         <TouchableOpacity 
           style={styles.gameMode}
-          onPress={() => navigation.navigate("Quiz", { mode: "duel" })} // Weiterleitung mit Modus
+          onPress={() => navigation.navigate("Quiz", { mode: "duel" })}
         >
           <Text style={styles.gameModeText}>Neues Spiel starten</Text>
         </TouchableOpacity>
@@ -83,7 +85,7 @@ export default function DashboardScreen({ navigation }) {
         <Text style={styles.subHeader}>Einzelspiel:</Text>
         <TouchableOpacity 
           style={styles.gameMode}
-          onPress={() => navigation.navigate("Quiz", { mode: "single" })} // Weiterleitung mit Modus
+          onPress={() => navigation.navigate("Quiz", { mode: "single" })}
         >
           <Text style={styles.gameModeText}>Neues Spiel starten</Text>
         </TouchableOpacity>
@@ -115,6 +117,13 @@ export default function DashboardScreen({ navigation }) {
             <Text style={styles.learningStats}>{item.progress} {item.percent}</Text>
           </View>
         ))}
+
+        {/* Extra-Funktion für den Ausbilder */}
+        {userType === "ausbilder" && (
+          <TouchableOpacity style={styles.gameMode} onPress={() => navigation.navigate("Fragenverwaltung")}>
+            <Text style={styles.gameModeText}>Fragenverwaltung</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </View>
   );

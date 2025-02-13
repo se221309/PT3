@@ -1,10 +1,25 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { authStyles } from "../styles/authStyles";
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  // Hardcoded Benutzer (nur für Testzwecke)
+  const users = {
+    ausbilder: "passwort123",
+    lehrling: "passwort456",
+  };
+
+  const handleLogin = () => {
+    if (users[username.toLowerCase()] && users[username.toLowerCase()] === password) {
+      const userType = username.toLowerCase() === "ausbilder" ? "ausbilder" : "lehrling";
+      navigation.navigate("Dashboard", { userType });
+    } else {
+      Alert.alert("Fehler", "Benutzername oder Passwort falsch!");
+    }
+  };
 
   return (
     <View style={authStyles.container}>
@@ -18,24 +33,24 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <Text>E-Mail / Username:</Text>
+        <Text>Benutzername:</Text>
         <TextInput
           style={authStyles.input}
-          placeholder="E-Mail / Username"
-          value={email}
-          onChangeText={setEmail}
+          placeholder="Benutzername"
+          value={username}
+          onChangeText={setUsername}
         />
 
-        <Text>Password:</Text>
+        <Text>Passwort:</Text>
         <TextInput
           style={authStyles.input}
-          placeholder="Password"
+          placeholder="Passwort"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
         />
 
-        <TouchableOpacity style={authStyles.button} onPress={() => navigation.navigate("Dashboard")}>
+        <TouchableOpacity style={authStyles.button} onPress={handleLogin}>
           <Text style={authStyles.buttonText}>Login!</Text>
         </TouchableOpacity>
       </View>
