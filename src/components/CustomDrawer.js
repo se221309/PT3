@@ -62,6 +62,7 @@ export default function CustomDrawer(props) {
               <Text style={drawerStyles.drawerItemText}>Fragenverwaltung</Text>
             </TouchableOpacity>
 
+
             <TouchableOpacity
               style={drawerStyles.drawerItem}
               onPress={() => navigation.navigate("Lehrlingsverwaltung")}
