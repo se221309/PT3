@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { drawerStyles } from "../styles/drawerStyles"; // Neue Styles importieren
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { drawerStyles } from "../styles/drawerStyles";
 
 export default function CustomDrawer(props) {
-  const { userType } = props; // Unterscheidung zwischen Lehrling und Ausbilder
+  const { navigation } = props;
+  const [userType, setUserType] = useState(null);
+
+  useEffect(() => {
+    // `userType` aus AsyncStorage abrufen
+    const fetchUserType = async () => {
+      try {
+        const storedUserType = await AsyncStorage.getItem("userType");
+        if (storedUserType) {
+          setUserType(storedUserType);
+        }
+      } catch (error) {
+        console.error("Fehler beim Abrufen des UserType:", error);
+      }
+    };
+    fetchUserType();
+  }, []);
 
   return (
     <View style={drawerStyles.drawerContainer}>
@@ -14,26 +31,41 @@ export default function CustomDrawer(props) {
       </View>
 
       <DrawerContentScrollView {...props}>
-      <TouchableOpacity style={drawerStyles.drawerItem} onPress={() => props.navigation.navigate("Profile")}>
-        <Text style={drawerStyles.drawerItemText}>Mein Profil</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={drawerStyles.drawerItem}
+          onPress={() => navigation.navigate("Profile")}
+        >
+          <Text style={drawerStyles.drawerItemText}>Mein Profil</Text>
+        </TouchableOpacity>
 
-        <TouchableOpacity style={drawerStyles.drawerItem} onPress={() => props.navigation.navigate("Settings")}>
+        <TouchableOpacity
+          style={drawerStyles.drawerItem}
+          onPress={() => navigation.navigate("Settings")}
+        >
           <Text style={drawerStyles.drawerItemText}>Einstellungen</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={drawerStyles.drawerItem} onPress={() => props.navigation.navigate("Statistics")}>
+        <TouchableOpacity
+          style={drawerStyles.drawerItem}
+          onPress={() => navigation.navigate("Statistics")}
+        >
           <Text style={drawerStyles.drawerItemText}>Statistik</Text>
         </TouchableOpacity>
 
         {/* Extra-Menüpunkte für den Ausbilder */}
         {userType === "ausbilder" && (
           <>
-            <TouchableOpacity style={drawerStyles.drawerItem} onPress={() => props.navigation.navigate("Fragenverwaltung")}>
+            <TouchableOpacity
+              style={drawerStyles.drawerItem}
+              onPress={() => navigation.navigate("Fragenverwaltung")}
+            >
               <Text style={drawerStyles.drawerItemText}>Fragenverwaltung</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={drawerStyles.drawerItem} onPress={() => props.navigation.navigate("Lehrlingsverwaltung")}>
+            <TouchableOpacity
+              style={drawerStyles.drawerItem}
+              onPress={() => navigation.navigate("Lehrlingsverwaltung")}
+            >
               <Text style={drawerStyles.drawerItemText}>Lehrlingsverwaltung</Text>
             </TouchableOpacity>
           </>
@@ -41,7 +73,13 @@ export default function CustomDrawer(props) {
       </DrawerContentScrollView>
 
       {/* Logout-Button unten */}
-      <TouchableOpacity style={drawerStyles.logoutButton} onPress={() => props.navigation.navigate("Login")}>
+      <TouchableOpacity
+        style={drawerStyles.logoutButton}
+        onPress={async () => {
+          await AsyncStorage.removeItem("userType"); // UserType zurücksetzen
+          navigation.navigate("Login");
+        }}
+      >
         <Text style={drawerStyles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
     </View>

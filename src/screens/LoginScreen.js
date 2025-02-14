@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage"; // Import für Speicherung
 import { authStyles } from "../styles/authStyles";
 
 const LoginScreen = ({ navigation }) => {
@@ -12,10 +13,16 @@ const LoginScreen = ({ navigation }) => {
     lehrling: "passwort456",
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (users[username.toLowerCase()] && users[username.toLowerCase()] === password) {
       const userType = username.toLowerCase() === "ausbilder" ? "ausbilder" : "lehrling";
-      navigation.navigate("Dashboard", { userType });
+
+      try {
+        await AsyncStorage.setItem("userType", userType); // Speichern des Benutzer-Typs
+        navigation.replace("Dashboard"); // Navigieren ohne zurückkehren zu können
+      } catch (error) {
+        Alert.alert("Fehler", "Benutzerrolle konnte nicht gespeichert werden.");
+      }
     } else {
       Alert.alert("Fehler", "Benutzername oder Passwort falsch!");
     }

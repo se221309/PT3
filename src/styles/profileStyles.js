@@ -9,21 +9,34 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
     color: "#ffffff",
     marginBottom: 20,
   },
+  profileBox: {
+    width: "90%",
+    backgroundColor: "#1C1A3D",
+    padding: 20,
+    borderRadius: 15,
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  profileText: {
+    fontSize: 18,
+    color: "#ffffff",
+    marginBottom: 10,
+  },
   button: {
     backgroundColor: "#A020F0",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
     borderRadius: 10,
     marginTop: 20,
   },
   buttonText: {
     color: "#ffffff",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
 });

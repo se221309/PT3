@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -14,33 +14,48 @@ import DashboardTabs from "./src/screens/DashboardTabs"; // Dashboard mit Leader
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-// **Drawer Navigation**
-const DrawerNavigator = ({ route }) => {
-  const { userType } = route.params || { userType: "lehrling" }; // Standard: Lehrling
-
-  return (
-    <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawer {...props} userType={userType} />}
-      screenOptions={{ headerShown: false }}
-    >
-      <Drawer.Screen name="DashboardTabs">
-        {(props) => <DashboardTabs {...props} userType={userType} />}
-      </Drawer.Screen>
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
-    </Drawer.Navigator>
-  );
-};
-
 export default function App() {
+  // State für userType (Lehrling oder Ausbilder)
+  const [userType, setUserType] = useState("lehrling"); // Standard: Lehrling
+
+  // **Drawer Navigation**
+  const DrawerNavigator = () => {
+    return (
+      <Drawer.Navigator
+        drawerContent={(props) => <CustomDrawer {...props} userType={userType} />}
+        screenOptions={{ headerShown: false }}
+      >
+        <Drawer.Screen name="DashboardTabs">
+          {(props) => <DashboardTabs {...props} userType={userType} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="Profile">
+          {(props) => <ProfileScreen {...props} userType={userType} />}
+        </Drawer.Screen>
+      </Drawer.Navigator>
+    );
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen 
+          name="Login" 
+          options={{ headerShown: false }}
+        >
+          {(props) => <LoginScreen {...props} setUserType={setUserType} />}
+        </Stack.Screen>
+        
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Dashboard" component={DrawerNavigator} options={{ headerShown: false }} />
+        
+        <Stack.Screen name="Dashboard" options={{ headerShown: false }}>
+          {() => <DrawerNavigator />}
+        </Stack.Screen>
+        
         <Stack.Screen name="Categories" component={CategoriesScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Quiz" component={QuizScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Profile">
+          {(props) => <ProfileScreen {...props} userType={userType} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

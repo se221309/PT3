@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, TouchableOpacity, FlatList } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage"; 
 import { styles } from "../styles/globalStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -23,11 +24,33 @@ const learningSections = [
 ];
 
 export default function DashboardScreen({ route, navigation }) {
-  const { userType } = route.params || { userType: "lehrling" }; // Standardwert für Lehrlinge
+  const [userType, setUserType] = useState("lehrling"); // Standardmäßig "lehrling"
+
+  // Beim Laden des Screens den UserType abrufen
+  useEffect(() => {
+    const fetchUserType = async () => {
+      try {
+        const storedUserType = await AsyncStorage.getItem("userType");
+        if (storedUserType) {
+          setUserType(storedUserType);
+        }
+      } catch (error) {
+        console.log("Fehler beim Abrufen des userType:", error);
+      }
+    };
+    fetchUserType();
+  }, []);
+
+  // Falls userType beim Navigieren übergeben wird, speichern wir ihn
+  useEffect(() => {
+    if (route.params?.userType) {
+      setUserType(route.params.userType);
+      AsyncStorage.setItem("userType", route.params.userType);
+    }
+  }, [route.params?.userType]);
 
   return (
     <View style={styles.screenContainer}>
-      
       {/* Menü-Button für Drawer */}
       <View style={styles.fixedHeader}>
         <TouchableOpacity style={styles.menuButton} onPress={() => navigation.openDrawer()}>
@@ -37,7 +60,6 @@ export default function DashboardScreen({ route, navigation }) {
 
       {/* Inhalt unterhalb des Headers */}
       <ScrollView style={styles.dashboardContainer} showsVerticalScrollIndicator={false}>
-        
         {/* Streak-Container */}
         <View style={styles.streakContainer}>
           <Text style={styles.streakText}>Dein Streak:</Text>
@@ -56,7 +78,7 @@ export default function DashboardScreen({ route, navigation }) {
         <Text style={styles.subHeader}>Duell:</Text>
         <TouchableOpacity 
           style={styles.gameMode}
-          onPress={() => navigation.navigate("Quiz", { mode: "duel" })}
+          onPress={() => navigation.navigate("Quiz", { mode: "duel", userType })}
         >
           <Text style={styles.gameModeText}>Neues Spiel starten</Text>
         </TouchableOpacity>
@@ -73,7 +95,7 @@ export default function DashboardScreen({ route, navigation }) {
               <Text style={styles.opponentScore}>{item.score}</Text>
               <TouchableOpacity 
                 style={styles.playButton}
-                onPress={() => navigation.navigate("Quiz", { mode: "duel" })}
+                onPress={() => navigation.navigate("Quiz", { mode: "duel", userType })}
               >
                 <Text style={styles.playButtonText}>Spielen</Text>
               </TouchableOpacity>
@@ -85,7 +107,7 @@ export default function DashboardScreen({ route, navigation }) {
         <Text style={styles.subHeader}>Einzelspiel:</Text>
         <TouchableOpacity 
           style={styles.gameMode}
-          onPress={() => navigation.navigate("Quiz", { mode: "single" })}
+          onPress={() => navigation.navigate("Quiz", { mode: "single", userType })}
         >
           <Text style={styles.gameModeText}>Neues Spiel starten</Text>
         </TouchableOpacity>
@@ -101,7 +123,7 @@ export default function DashboardScreen({ route, navigation }) {
               <Text style={styles.singleGameScore}>{item.score}</Text>
               <TouchableOpacity 
                 style={styles.playButton}
-                onPress={() => navigation.navigate("Quiz", { mode: "single" })}
+                onPress={() => navigation.navigate("Quiz", { mode: "single", userType })}
               >
                 <Text style={styles.playButtonText}>Spielen</Text>
               </TouchableOpacity>
@@ -120,10 +142,11 @@ export default function DashboardScreen({ route, navigation }) {
 
         {/* Extra-Funktion für den Ausbilder */}
         {userType === "ausbilder" && (
-          <TouchableOpacity style={styles.gameMode} onPress={() => navigation.navigate("Fragenverwaltung")}>
+          <TouchableOpacity style={styles.gameMode} onPress={() => navigation.navigate("Fragenverwaltung", { userType })}>
             <Text style={styles.gameModeText}>Fragenverwaltung</Text>
           </TouchableOpacity>
         )}
+
       </ScrollView>
     </View>
   );
