@@ -9,7 +9,8 @@ import SignUpScreen from "./src/screens/SignUpScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import CategoriesScreen from "./src/screens/CategoriesScreen";
 import QuizScreen from "./src/screens/QuizScreen";
-import DashboardTabs from "./src/screens/DashboardTabs"; // Dashboard mit Leaderboard Swipe
+import DashboardTabs from "./src/screens/DashboardTabs"; 
+import QuestionsManagementScreen from "./src/screens/QuestionsManagementScreen"; // Neue Fragenverwaltung
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -31,6 +32,13 @@ export default function App() {
         <Drawer.Screen name="Profile">
           {(props) => <ProfileScreen {...props} userType={userType} />}
         </Drawer.Screen>
+
+        {/* Fragenverwaltung nur für den Ausbilder sichtbar */}
+        {userType === "ausbilder" && (
+          <Drawer.Screen name="Fragenverwaltung">
+            {(props) => <QuestionsManagementScreen {...props} userType={userType} />}
+          </Drawer.Screen>
+        )}
       </Drawer.Navigator>
     );
   };
@@ -55,6 +63,11 @@ export default function App() {
         <Stack.Screen name="Quiz" component={QuizScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Profile">
           {(props) => <ProfileScreen {...props} userType={userType} />}
+        </Stack.Screen>
+
+        {/* Fragenverwaltung für Stack-Navigation */}
+        <Stack.Screen name="Fragenverwaltung" options={{ headerShown: false }}>
+          {(props) => <QuestionsManagementScreen {...props} userType={userType} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
