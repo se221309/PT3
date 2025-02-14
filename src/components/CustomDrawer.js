@@ -27,7 +27,7 @@ export default function CustomDrawer(props) {
     <View style={drawerStyles.drawerContainer}>
       {/* Benutzerinfo */}
       <View style={drawerStyles.userInfo}>
-        <Text style={drawerStyles.userName}>Laurenz Kofler</Text>
+        <Text style={drawerStyles.userName}>Sascha Benedik</Text>
       </View>
 
       <DrawerContentScrollView {...props}>
