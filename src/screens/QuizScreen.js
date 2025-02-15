@@ -5,6 +5,7 @@ import questionsPool from "../data/questions"; // Fragenpool importieren
 
 export default function QuizScreen({ route, navigation }) {
   const { mode } = route.params;
+  const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [userInput, setUserInput] = useState("");
@@ -13,16 +14,30 @@ export default function QuizScreen({ route, navigation }) {
   const progress = useRef(new Animated.Value(1)).current;
   const timerInterval = useRef(null);
 
+  // Funktion zum zufälligen Mischen eines Arrays (Fisher-Yates Shuffle)
+  const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
   useEffect(() => {
+    // Wähle 5 zufällige Fragen aus
+    const shuffledQuestions = shuffleArray([...questionsPool]).slice(0, 5);
+    setSelectedQuestions(shuffledQuestions);
     startTimer();
     return () => clearInterval(timerInterval.current); // Cleanup Timer bei Neu-Laden
+  }, []);
+
+  useEffect(() => {
+    if (selectedQuestions.length > 0) {
+      startTimer();
+    }
   }, [currentQuestionIndex]);
 
   const startTimer = () => {
-    if (mode === "duel") {
+    if (mode === "duel" && selectedQuestions.length > 0) {
       setTimer(30);
       progress.setValue(1);
-      clearInterval(timerInterval.current); // Vorherigen Timer stoppen, falls noch aktiv
+      clearInterval(timerInterval.current);
 
       timerInterval.current = setInterval(() => {
         setTimer((prev) => {
@@ -45,26 +60,27 @@ export default function QuizScreen({ route, navigation }) {
   const stopTimer = () => {
     clearInterval(timerInterval.current);
     Animated.timing(progress, {
-      toValue: progress.__getValue(), // Balken bleibt auf aktuellem Stand stehen
+      toValue: progress.__getValue(),
       duration: 0,
       useNativeDriver: false,
     }).start();
   };
 
-  const question = questionsPool[currentQuestionIndex];
+  if (selectedQuestions.length === 0) return null; // Ladebildschirm oder Fallback, falls Fragen noch nicht geladen sind
+  const question = selectedQuestions[currentQuestionIndex];
 
   const checkAnswer = () => {
     setAnswerChecked(true);
-    stopTimer(); // Timer und Balken stoppen nach Überprüfung
+    stopTimer();
   };
 
   const handleNextQuestion = () => {
-    if (currentQuestionIndex < questionsPool.length - 1) {
+    if (currentQuestionIndex < selectedQuestions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(null);
       setUserInput("");
       setAnswerChecked(false);
-      startTimer(); // Timer zurücksetzen
+      startTimer();
     } else {
       navigation.navigate("Dashboard");
     }
@@ -74,7 +90,6 @@ export default function QuizScreen({ route, navigation }) {
     <View style={styles.container}>
       <Text style={styles.questionText}>{question.question}</Text>
 
-      {/* Timer nur im Duellmodus */}
       {mode === "duel" && (
         <View style={styles.timerContainer}>
           <Animated.View
@@ -92,25 +107,23 @@ export default function QuizScreen({ route, navigation }) {
         </View>
       )}
 
-      {/* Multiple Choice Fragen */}
       {question.type === "multipleChoice" &&
         question.options.map((option, index) => (
           <TouchableOpacity
             key={index}
             style={[
               styles.optionButton,
-              selectedAnswer === option && styles.selectedAnswer, // Antwort bleibt grau markiert
-              answerChecked && option === question.correctAnswer && styles.correctAnswer, // Richtige Antwort → Grün
-              answerChecked && selectedAnswer === option && selectedAnswer !== question.correctAnswer && styles.wrongAnswer, // Falsche Antwort → Rot
+              selectedAnswer === option && styles.selectedAnswer,
+              answerChecked && option === question.correctAnswer && styles.correctAnswer,
+              answerChecked && selectedAnswer === option && selectedAnswer !== question.correctAnswer && styles.wrongAnswer,
             ]}
             onPress={() => setSelectedAnswer(option)}
-            disabled={answerChecked} // Sperrt nach Auswahl
+            disabled={answerChecked}
           >
             <Text>{option}</Text>
           </TouchableOpacity>
         ))}
 
-      {/* Multiple Choice Grid */}
       {question.type === "multipleChoiceGrid" && (
         <View style={styles.gridContainer}>
           {question.options.map((option, index) => (
@@ -118,12 +131,12 @@ export default function QuizScreen({ route, navigation }) {
               key={index}
               style={[
                 styles.gridItem,
-                selectedAnswer === option && styles.selectedAnswer, // Antwort bleibt grau markiert
-                answerChecked && option === question.correctAnswer && styles.correctAnswer, // Richtige Antwort → Grün
-                answerChecked && selectedAnswer === option && selectedAnswer !== question.correctAnswer && styles.wrongAnswer, // Falsche Antwort → Rot
+                selectedAnswer === option && styles.selectedAnswer,
+                answerChecked && option === question.correctAnswer && styles.correctAnswer,
+                answerChecked && selectedAnswer === option && selectedAnswer !== question.correctAnswer && styles.wrongAnswer,
               ]}
               onPress={() => setSelectedAnswer(option)}
-              disabled={answerChecked} // Sperrt nach Auswahl
+              disabled={answerChecked}
             >
               <Text>{option}</Text>
             </TouchableOpacity>
@@ -131,7 +144,6 @@ export default function QuizScreen({ route, navigation }) {
         </View>
       )}
 
-      {/* Textinput Fragen */}
       {question.type === "textInput" && (
         <TextInput
           style={styles.textInput}
@@ -141,7 +153,6 @@ export default function QuizScreen({ route, navigation }) {
         />
       )}
 
-      {/* Gap Fill Fragen */}
       {question.type === "gapFill" && (
         <TextInput
           style={styles.textInput}
@@ -151,12 +162,10 @@ export default function QuizScreen({ route, navigation }) {
         />
       )}
 
-      {/* Anzeige der richtigen Lösung bei falscher Antwort */}
       {answerChecked && selectedAnswer !== question.correctAnswer && (
         <Text style={styles.feedbackText}>Richtige Antwort: {question.correctAnswer}</Text>
       )}
 
-      {/* Weiter-Button */}
       <TouchableOpacity style={styles.nextButton} onPress={answerChecked ? handleNextQuestion : checkAnswer}>
         <Text style={styles.nextButtonText}>{answerChecked ? "Weiter" : "Überprüfen"}</Text>
       </TouchableOpacity>
