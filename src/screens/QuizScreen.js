@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, TouchableOpacity, TextInput, Animated } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Animated, Image } from "react-native";
 import { styles } from "../styles/quizStyles";
 import questionsPool from "../data/questions"; // Fragenpool importieren
 
@@ -88,6 +88,11 @@ export default function QuizScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      
+      {question.image && (
+  <Image source={question.image} style={styles.questionImage} />
+)}
+
       <Text style={styles.questionText}>{question.question}</Text>
 
       {mode === "duel" && (

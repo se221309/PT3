@@ -81,4 +81,11 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 10,
   },
+  questionImage: {
+    width: "100%",
+    height: 200,
+    resizeMode: "contain",
+    marginBottom: 10,
+  },
+  
 });

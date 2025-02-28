@@ -7,6 +7,7 @@ const questionsPool = [
     question: "Welche Schaltung ist zu sehen?",
     options: ["Wendeschütz-Schaltung", "Einfachschütz-Schaltung", "Oder-Schaltung", "Und-Schaltung"],
     correctAnswer: "Oder-Schaltung",
+    image: require("../assets/schaltung.png"),
   },
   {
     id: 2,
